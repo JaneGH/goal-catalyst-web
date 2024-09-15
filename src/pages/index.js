@@ -1,6 +1,6 @@
 import Error from './Error';
 import Landing from './Landing';
-import Dashboard from './Dashboard';
+import SharedLayout from './dashboard/SharedLayout';
 import Register from './Register';
 
-export { Landing, Error, Register, Dashboard };
+export { Landing, Error, Register, SharedLayout };

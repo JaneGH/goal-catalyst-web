@@ -1,11 +1,23 @@
 // userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { loginUserThunk, registerUserThunk } from './userThunk';
+
+import {
+  addUserToLocalStorage,
+  getUserFromLocalStorage,
+  removeUserFromLocalStorage,
+} from '../../utils/localStorage';
+import {
+  loginUserThunk,
+  registerUserThunk,
+  // updateUserThunk,
+  // clearStoreThunk,
+} from './userThunk';
 
 const initialState = {
   isLoading: false,
-  user: null,
+  // isSidebarOpen: false,
+  user: getUserFromLocalStorage(),
 };
 
 export const registerUser = createAsyncThunk(
@@ -26,6 +38,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen;
+    },
     logoutUser: (state) => {
       state.user = null;
       toast.info('You have been logged out.');
@@ -63,5 +78,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logoutUser } = userSlice.actions;
+export const { toggleSidebar, logoutUser } = userSlice.actions;
 export default userSlice.reducer;
