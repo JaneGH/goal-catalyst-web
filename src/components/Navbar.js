@@ -3,7 +3,7 @@ import { FaAlignLeft, FaUserCircle, FaCaretDown } from 'react-icons/fa';
 import Logo from './Logo';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSidebar } from '../features/user/userSlice';
+import { toggleSidebar, clearStore } from '../features/user/userSlice';
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
@@ -30,15 +30,15 @@ const Navbar = () => {
             className='btn'
             onClick={() => setShowLogout(!showLogout)}
           >
-            <FaUserCircle />
-            {user?.name}
-            <FaCaretDown />
+            <FaUserCircle className='icon' />
+            <span className='username'>{user?.name}</span>
+            <FaCaretDown className='icon' />
           </button>
           <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
             <button
               type='button'
               className='dropdown-btn'
-              // onClick={() => dispatch(clearStore('Logging out...'))}
+              //onClick={() => dispatch(clearStore('Logging out...'))}
             >
               logout
             </button>
