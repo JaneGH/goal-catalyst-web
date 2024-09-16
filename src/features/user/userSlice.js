@@ -1,7 +1,5 @@
-// userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-
 import {
   addUserToLocalStorage,
   getUserFromLocalStorage,
@@ -10,13 +8,13 @@ import {
 import {
   loginUserThunk,
   registerUserThunk,
-  // updateUserThunk,
-  // clearStoreThunk,
+  updateUserThunk,
+  clearStoreThunk,
 } from './userThunk';
 
 const initialState = {
   isLoading: false,
-  // isSidebarOpen: false,
+  isSidebarOpen: false,
   user: getUserFromLocalStorage(),
 };
 
@@ -34,6 +32,13 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, thunkAPI) => {
+    return updateUserThunk('/auth/updateUser', user, thunkAPI);
+  }
+);
+export const clearStore = createAsyncThunk('user/clearStore', clearStoreThunk);
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -52,32 +57,56 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Registration Cases
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(registerUser.fulfilled, (state, { payload }) => {
+        // const { user } = payload;
+        const { user, token } = payload;
         state.isLoading = false;
-        state.user = payload.user; // Adjust based on your actual payload structure
-        toast.success(`Hello There, ${payload.user.name}!`);
+        state.user = { ...user, token };
+        // state.user = user;
+        addUserToLocalStorage(state.user);
+        toast.success(`Hello There ${user.name}`);
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(payload); // payload should now be a serializable string
+        toast.error(payload);
       })
-
-      // Login Cases
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
+        // const { user } = payload;
+        const { user, token } = payload;
         state.isLoading = false;
-        state.user = payload.user; // Adjust based on your actual payload structure
-        toast.success(`Welcome back, ${payload.user.name}!`);
+        state.user = { ...user, token };
+        // state.user = user;
+        addUserToLocalStorage(state.user);
+
+        toast.success(`Welcome Back ${user.name}`);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(payload); // payload should now be a serializable string
+        toast.error(payload);
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        addUserToLocalStorage(user);
+
+        toast.success(`User Updated!`);
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(clearStore.rejected, () => {
+        toast.error('There was an error..');
       });
   },
 });

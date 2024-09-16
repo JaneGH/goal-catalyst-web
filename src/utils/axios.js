@@ -7,20 +7,31 @@ const customFetch = axios.create({
 });
 
 
-// customFetch.interceptors.request.use((config) => {
-//   const user = getUserFromLocalStorage();
-//   if (user) {
-//     config.headers['Authorization'] = `Bearer ${user.token}`;
-//   }
-//   return config;
-// });
+customFetch.interceptors.request.use(
+  (config) => {
+    // Retrieve user data from localStorage
+    const user = getUserFromLocalStorage();
+    console.log("USER!!!", user);
 
-// export const checkForUnauthorizedResponse = (error, thunkAPI) => {
-//   if (error.response.status === 401) {
-//     thunkAPI.dispatch(clearStore());
-//     return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
-//   }
-//   return thunkAPI.rejectWithValue(error.response.data.msg);
-// };
+     if (user && user.token) {
+      config.headers['Authorization'] = `Bearer ${user.token}`;
+     } else {
+      console.log("No token found");
+    }
+    
+    return config;
+  },
+  (error) => {
+    console.error('Request error:', error);
+    return Promise.reject(error);
+  }
+);
+export const checkForUnauthorizedResponse = (error, thunkAPI) => {
+  if (error.response.status === 401) {
+    thunkAPI.dispatch(clearStore());
+    return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
+  }
+  return thunkAPI.rejectWithValue(error.response.data.msg);
+};
 
 export default customFetch;

@@ -1,6 +1,111 @@
+import { FormRow, FormRowSelect } from '../../components';
+import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import {
+  handleChange,
+  clearValues,
+  createGoal,
+  editGoal,
+} from '../../features/goal/goalSlice';
+import { useEffect } from 'react';
+
 const AddGoal = () => {
+  // Destructure state correctly
+  const {
+    isLoading,
+    title,
+    description,
+    targetDate,
+    progress,
+    assignedTo,
+    statusOptions,
+    status,
+    isEditing,
+    editGoalId,
+  } = useSelector((store) => store.goal);
+  
+  const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!title || !description || !targetDate || !status) {
+      toast.error('Please fill out all fields');
+      return;
+    }
+
+    if (isEditing) {
+      dispatch(
+        editGoal({
+          goalId: editGoalId,
+          goal: { title, description, targetDate, progress, status },
+        })
+      );
+    } else {
+      dispatch(createGoal({ title, description, targetDate, progress, assignedTo, status }));
+    }
+  };
+
+  const handleGoalInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    dispatch(handleChange({ name, value }));
+  };
+
   return (
-    <h1>Add Goal</h1>
+    <Wrapper>
+      <form className='form' onSubmit={handleSubmit}>
+        <h3>{isEditing ? 'Edit Goal' : 'Add Goal'}</h3>
+        <div className='form-center'>
+          {/* Title */}
+          <FormRow
+            type='text'
+            name='title'
+            value={title}
+            handleChange={handleGoalInput}
+          />
+          {/* Description */}
+          <FormRow
+            type='text'
+            name='description'
+            value={description}
+            handleChange={handleGoalInput}
+          />
+          <FormRow
+            type='date'  
+            name='targetDate'  
+            value={targetDate} 
+            handleChange={handleGoalInput} 
+          />
+          {/* Status */}
+          <FormRowSelect
+            name='status'
+            value={status}
+            handleChange={handleGoalInput}
+            list={statusOptions}
+          />
+          <div className='btn-container'>
+            <button
+              type='button'
+              className='btn btn-block clear-btn'
+              onClick={() => dispatch(clearValues())}
+            >
+              Clear
+            </button>
+            <button
+              type='submit'
+              className='btn btn-block submit-btn'
+              disabled={isLoading}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </Wrapper>
   );
 };
+
 export default AddGoal;
