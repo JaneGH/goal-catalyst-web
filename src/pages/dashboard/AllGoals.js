@@ -1,6 +1,11 @@
+import { GoalsContainer, SearchContainer } from '../../components';
+
 const AllGoals = () => {
   return (
-    <h1>All Goals</h1>
+    <>
+      <SearchContainer />
+      <GoalsContainer />
+    </>
   );
 };
 export default AllGoals;
