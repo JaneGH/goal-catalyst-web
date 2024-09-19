@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { getAllGoalsThunk, showStatsThunk } from './allGoalsThunk';
+import { getAllGoalsThunk } from './allGoalsThunk';
 
 const initialFiltersState = {
   search: '',
@@ -17,7 +17,6 @@ const initialState = {
   numOfPages: 1,
   page: 1,
 //   stats: {},
-//   monthlyApplications: [],
   ...initialFiltersState,
 };
 

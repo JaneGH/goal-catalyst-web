@@ -30,15 +30,15 @@ const Navbar = () => {
             className='btn'
             onClick={() => setShowLogout(!showLogout)}
           >
-            <FaUserCircle className='icon' />
-            <span className='username'>{user?.name}</span>
-            <FaCaretDown className='icon' />
+            <FaUserCircle />
+            {user?.name}
+            <FaCaretDown />
           </button>
           <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
             <button
               type='button'
               className='dropdown-btn'
-              //onClick={() => dispatch(clearStore('Logging out...'))}
+              onClick={() => dispatch(clearStore('Logging out...'))}
             >
               logout
             </button>

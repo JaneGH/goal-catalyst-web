@@ -2,13 +2,13 @@ import { FormRow, FormRowSelect } from '../../components';
 import Wrapper from '../../assets/wrappers/DashboardFormPage';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 import {
   handleChange,
   clearValues,
   createGoal,
   editGoal,
 } from '../../features/goal/goalSlice';
-import { useEffect } from 'react';
 
 const AddGoal = () => {
   // Destructure state correctly
@@ -18,7 +18,7 @@ const AddGoal = () => {
     description,
     targetDate,
     progress,
-    assignedTo,
+    assignedToEmail,
     statusOptions,
     status,
     isEditing,
@@ -40,13 +40,14 @@ const AddGoal = () => {
       dispatch(
         editGoal({
           goalId: editGoalId,
-          goal: { title, description, targetDate, progress, status },
+          goal: { title, description, targetDate, progress, status},
         })
       );
     } else {
-      dispatch(createGoal({ title, description, targetDate, progress, assignedTo, status }));
+      dispatch(createGoal({ title, description, targetDate, progress, assignedToEmail, status }));
     }
   };
+
 
   const handleGoalInput = (e) => {
     const name = e.target.name;
@@ -79,6 +80,18 @@ const AddGoal = () => {
             value={targetDate} 
             handleChange={handleGoalInput} 
           />
+
+           {/* Progress */}
+           <FormRow
+            type='number'
+            name='progress'
+            value={progress}
+            handleChange={handleGoalInput}
+            min="0"
+            max="100"
+            step="1"
+          />
+
           {/* Status */}
           <FormRowSelect
             name='status'
@@ -86,6 +99,17 @@ const AddGoal = () => {
             handleChange={handleGoalInput}
             list={statusOptions}
           />
+
+        {/* Assigned To */}
+        {!isEditing && (
+          <FormRow
+            type='email'
+            name='assignedToEmail'
+            value={assignedToEmail || ''}
+            handleChange={handleGoalInput}
+          />
+        )}
+
           <div className='btn-container'>
             <button
               type='button'

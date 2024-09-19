@@ -10,6 +10,7 @@ const Goal = ({
   title,
   description,
   targetDate,
+  progress,
   createdAt,
   status,
 }) => {
@@ -22,8 +23,8 @@ const Goal = ({
       <header>
         <div className='main-icon'>{title.charAt(0)}</div>
         <div className='info'>
-          <h5>{description}</h5>
-          <p>{title}</p>
+          <h5>{title}</h5>
+          <p>{description}</p>
         </div>
       </header>
       <div className='content'>
@@ -44,6 +45,7 @@ const Goal = ({
                     title,
                     description,
                     targetDate,
+                    progress,
                     status,
                   })
                 )

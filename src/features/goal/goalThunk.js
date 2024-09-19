@@ -1,4 +1,4 @@
-// import { showLoading, hideLoading, getAllGoals } from '../allGoals/allGoalsSlice';
+import { showLoading, hideLoading, getAllGoals } from '../allGoals/allGoalsSlice';
 import customFetch, { checkForUnauthorizedResponse } from '../../utils/axios';
 import { clearValues } from './goalSlice';
 
@@ -24,13 +24,15 @@ export const createGoalThunk = async (goal, thunkAPI) => {
 
 
 export const deleteGoalThunk = async (goalId, thunkAPI) => {
-//   thunkAPI.dispatch(showLoading());
+  thunkAPI.dispatch(showLoading());
   try {
+    console.log('try delete' + goalId);
     const resp = await customFetch.delete(`/goals/${goalId}`);
-    // thunkAPI.dispatch(getAllGoals());
+    thunkAPI.dispatch(getAllGoals());
     return resp.data.msg;
   } catch (error) {
-    // thunkAPI.dispatch(hideLoading());
+    thunkAPI.dispatch(hideLoading());
+    console.error('API Error:', error.response ? error.response.data : error.message);
     return checkForUnauthorizedResponse(error, thunkAPI);
   }
 };
@@ -40,6 +42,7 @@ export const editGoalThunk = async ({ goalId, goal}, thunkAPI) => {
     thunkAPI.dispatch(clearValues());
     return resp.data;
   } catch (error) {
+    console.error('Error:', error.response ? error.response.data : error.message);
     return checkForUnauthorizedResponse(error, thunkAPI);
   }
 };
