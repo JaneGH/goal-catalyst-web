@@ -1,13 +1,10 @@
-import { IoBarChartSharp } from 'react-icons/io5';
-import { MdQueryStats } from 'react-icons/md';
-import { FaWpforms } from 'react-icons/fa';
-import { ImProfile } from 'react-icons/im';
+
+import { MdAdd } from "react-icons/md";
+import { GoGoal } from "react-icons/go";
 
 const links = [
-  // { id: 1, text: 'stats', path: '/', icon: <IoBarChartSharp /> },
-  { id: 1, text: 'all goals', path: 'all-goals', icon: <MdQueryStats /> },
-  { id: 2, text: 'add goal', path: 'add-goal', icon: <FaWpforms /> },
-//   { id: 4, text: 'profile', path: 'profile', icon: <ImProfile /> },
+  { id: 1, text: 'all goals', path: 'all-goals', icon: <GoGoal /> },
+  { id: 2, text: 'add goal', path: 'add-goal', icon: <MdAdd /> },
 ];
 
 export default links;

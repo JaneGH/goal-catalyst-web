@@ -8,12 +8,13 @@ const initialState = {
     description: '',
     targetDate: '',
     progress: '0',
-    assignedTo: '',
+    assignedToEmail: '',
     statusOptions: ['Not Started', 'In Progress', 'Completed'],
     status: 'Not Started',
     isEditing: false,
     editGoalId: '',
 };
+
 
 export const createGoal = createAsyncThunk('goal/createGoal', createGoalThunk);
 
@@ -29,7 +30,6 @@ const goalSlice = createSlice({
       state[name] = value;
     },
     clearValues: (state) => {
-      // Using Object.assign for immutability and clarity
       Object.assign(state, initialState);
     },
     setEditGoal: (state, { payload }) => {

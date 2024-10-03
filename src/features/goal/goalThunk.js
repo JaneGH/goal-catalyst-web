@@ -1,5 +1,6 @@
 import { showLoading, hideLoading, getAllGoals } from '../allGoals/allGoalsSlice';
 import customFetch, { checkForUnauthorizedResponse } from '../../utils/axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { clearValues } from './goalSlice';
 
 
@@ -12,15 +13,52 @@ export const createGoalThunk = async (goal, thunkAPI) => {
     
     // Log the full response from the API
     console.log('Response:', resp); 
-    
+
+    const email = {
+      toEmail: goal.assignedToEmail,
+      textContent: "You have a new task to do!"
+    };
+
+    const emailResponse = await thunkAPI.dispatch(sendEmailThunk(email));
+    console.log('Email response:', emailResponse);
+
     thunkAPI.dispatch(clearValues());
     return resp.data.msg;
+
   } catch (error) {
     // Log the error response
     console.error('API Error:', error.response ? error.response.data : error.message);
     return checkForUnauthorizedResponse(error, thunkAPI);
   }
 };
+
+export const sendEmailThunk = createAsyncThunk(
+  'goal/sendEmail',
+  async (email, thunkAPI) => {
+    try {
+      const { toEmail, textContent } = email;
+     // const textContent = "You have a new task to do!"; // Corrected declaration
+      console.log('Email object being sent:', { toEmail, textContent });
+
+      const emailData = {
+        toEmail,
+        textContent,
+      };
+
+      const resp = await customFetch.post('/email', emailData);
+
+      // Log the full response from the API
+      console.log('Response:', resp);
+
+      thunkAPI.dispatch(clearValues());
+      return resp.data.message; // Adjust based on your API response
+    } catch (error) {
+      // Log the error response
+      console.error('API Error:', error.response ? error.response.data : error.message);
+      return thunkAPI.rejectWithValue(checkForUnauthorizedResponse(error, thunkAPI));
+    }
+  }
+);
 
 
 export const deleteGoalThunk = async (goalId, thunkAPI) => {

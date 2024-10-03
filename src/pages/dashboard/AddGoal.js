@@ -36,15 +36,18 @@ const AddGoal = () => {
       return;
     }
 
+    const formattedTargetDate = new Date(targetDate).toISOString();
+    console.log("formattedTargetDate" + formattedTargetDate);
+
     if (isEditing) {
       dispatch(
         editGoal({
           goalId: editGoalId,
-          goal: { title, description, targetDate, progress, status},
+          goal: { title, description, targetDate: formattedTargetDate, progress, status},
         })
       );
     } else {
-      dispatch(createGoal({ title, description, targetDate, progress, assignedToEmail, status }));
+      dispatch(createGoal({ title, description, targetDate: formattedTargetDate, progress, assignedToEmail, status }));
     }
   };
 
@@ -54,6 +57,9 @@ const AddGoal = () => {
     const value = e.target.value;
     dispatch(handleChange({ name, value }));
   };
+
+  const displayTargetDate = targetDate ? targetDate.split('T')[0] : '';
+
 
   return (
     <Wrapper>
@@ -77,7 +83,7 @@ const AddGoal = () => {
           <FormRow
             type='date'  
             name='targetDate'  
-            value={targetDate} 
+            value={displayTargetDate} 
             handleChange={handleGoalInput} 
           />
 

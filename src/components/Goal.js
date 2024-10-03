@@ -16,7 +16,7 @@ const Goal = ({
 }) => {
   const dispatch = useDispatch();
 
-  const date = moment(createdAt).format('MMM Do, YYYY');
+  const date = moment.utc(targetDate).format('MMM Do, YYYY');
 
   return (
     <Wrapper>
