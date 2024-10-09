@@ -36,6 +36,11 @@ const AddGoal = () => {
       return;
     }
 
+    if (progress>100 || progress<0) {
+      toast.error('Progress should be 0 .. 100');
+      return;
+    }
+
     const formattedTargetDate = new Date(targetDate).toISOString();
     console.log("formattedTargetDate" + formattedTargetDate);
 
