@@ -2,6 +2,7 @@ import { showLoading, hideLoading, getAllGoals } from '../allGoals/allGoalsSlice
 import customFetch, { checkForUnauthorizedResponse } from '../../utils/axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { clearValues } from './goalSlice';
+import { toast } from 'react-toastify';
 
 
 export const createGoalThunk = async (goal, thunkAPI) => {
@@ -27,7 +28,8 @@ export const createGoalThunk = async (goal, thunkAPI) => {
 
   } catch (error) {
     // Log the error response
-    console.error('API Error:', error.response ? error.response.data : error.message);
+    toast.error(""+(error.response ? error.response.data.error : error.message));
+    console.error('API Error:', error.response ? error.response.data.error: error.message);
     return checkForUnauthorizedResponse(error, thunkAPI);
   }
 };
