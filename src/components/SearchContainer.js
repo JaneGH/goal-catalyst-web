@@ -7,10 +7,11 @@ import { useState, useMemo } from 'react';
 const SearchContainer = () => {
   const [localSearch, setLocalSearch] = useState('');
 
-  const { isLoading, search, searchStatus, searchType, sort, sortOptions } =
+  const { isLoading, search, searchStatus, goalType, goalTypeOptions, sort, sortOptions } =
     useSelector((store) => store.allGoals);
 
-  const { statusOptions } = useSelector((store) => store.goal);
+  const { statusOptions }  = useSelector((store) => store.goal);
+
 
   const dispatch = useDispatch();
 
@@ -58,13 +59,13 @@ const SearchContainer = () => {
           />
 
           {/* search by type*/}
-          {/* <FormRowSelect
-            labelText='type'
-            name='searchType'
-            value={searchType}
+          <FormRowSelect
+            name='goalType'
+            value={goalType}
             handleChange={handleSearch}
-            list={['all', ...goalTypeOptions]}
-          /> */}
+            list={goalTypeOptions}
+          />
+
           {/* sort */}
           <FormRowSelect
             name='sort'

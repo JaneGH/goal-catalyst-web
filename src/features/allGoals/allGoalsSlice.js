@@ -5,7 +5,8 @@ import { getAllGoalsThunk } from './allGoalsThunk';
 const initialFiltersState = {
   search: '',
   searchStatus: 'all',
-  searchType: 'all',
+  goalType: 'my',
+  goalTypeOptions : ['my',  'assigned to me', 'for friends', 'all'],
   sort: 'latest',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
@@ -61,18 +62,6 @@ const allGoalsSlice = createSlice({
         state.isLoading = false;
         toast.error(payload);
       })
-      // .addCase(showStats.pending, (state) => {
-      //   state.isLoading = true;
-      // })
-      // .addCase(showStats.fulfilled, (state, { payload }) => {
-      //   state.isLoading = false;
-      //   state.stats = payload.defaultStats;
-      //   state.monthlyApplications = payload.monthlyApplications;
-      // })
-      // .addCase(showStats.rejected, (state, { payload }) => {
-      //   state.isLoading = false;
-      //   toast.error(payload);
-      // });
   },
 });
 

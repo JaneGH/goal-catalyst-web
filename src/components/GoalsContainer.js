@@ -14,14 +14,14 @@ const GoalsContainer = () => {
     numOfPages,
     search,
     searchStatus,
-    searchType,
+    goalType,
     sort,
   } = useSelector((store) => store.allGoals);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllGoals());
-  }, [page, search, searchStatus, searchType, sort]);
+  }, [page, search, searchStatus, goalType, sort]);
 
   if (isLoading) {
     return <Loading />;
